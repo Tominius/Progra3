@@ -54,6 +54,12 @@ public class Main {
                 u += findMin(clienteaC);
             }
 
+            for (int q = 0; q < combs.size(); q++) {
+                if (combs.get(q) == 1) {
+                    u+= matriz.matriz[q][51];
+                }
+            }
+
             if (u== 0) {
                  u = Integer.MAX_VALUE;
             }
@@ -78,21 +84,24 @@ public class Main {
                 c += findMin(clienteaCC);
             }
 
+            for (int p = 0; p < combs.size(); p++) {
+                if (combs.get(p) == 1) {
+                    c+= matriz.matriz[p][51];
+                }
+            }
+
             if (c== 0) {
                 c = Integer.MAX_VALUE;
             }
 
             System.out.println("C: "+c);
 
-            if (upper>u){
-                upper = u;
-            }
-
             System.out.println(combs);
-            if (c<upper){
-                listas(indice + 1, fin, combs,matriz, Integer.MAX_VALUE);  // Llamada recursiva para el siguiente índice
-                combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
-            }
+
+            listas(indice + 1, fin, combs,matriz, Integer.MAX_VALUE);  // Llamada recursiva para el siguiente índice
+            combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
+
+
 
 
         }
@@ -150,22 +159,7 @@ public class Main {
             e.printStackTrace();
         }
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        Scanner in = new Scanner(System.in);
-        System.out.println("TP Final de Programacion III");
-
         Matriz M = new Matriz(8,52);
-
-        for (int i = 0; i <= 7; i++) {
-            for (int j = 0; j <= 49; j++) {
-                M.llenarMatriz(i,j, centros.path(50+i, j)); // path lo que hace es devolver el camino mas corto entre un nodo y otro
-                                                            // en este caso estamos verificando el menor camino de cada productor a cada centro
-            }
-        }
 
         //Relleno las ultimas 2 columnas
 
@@ -180,6 +174,22 @@ public class Main {
             System.out.println("Ocurrió un error al leer el archivo.");
             e.printStackTrace();
         }
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("TP Final de Programacion III");
+
+
+
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 49; j++) {
+                M.llenarMatriz(i,j, (centros.path(50+i, j) + M.matriz[i][50])*10); // path lo que hace es devolver el camino mas corto entre un nodo y otro
+                                                            // en este caso estamos verificando el menor camino de cada productor a cada centro
+            }
+        }
+
+
 
         M.printMatrix();
 
