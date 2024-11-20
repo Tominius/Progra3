@@ -64,7 +64,11 @@ public class Main {
                  u = Integer.MAX_VALUE;
             }
 
-            System.out.println("U: "+u);
+            if (u< upper){
+                upper = u;
+            }
+
+
 
             // Buscamos c
             int c = 0; // Mejor valor posible
@@ -94,16 +98,19 @@ public class Main {
                 c = Integer.MAX_VALUE;
             }
 
-            System.out.println("C: "+c);
 
+            if (combs.size() == fin) {
+
+            System.out.println("U: "+u);
+            System.out.println("C: "+c);
             System.out.println(combs);
 
-            listas(indice + 1, fin, combs,matriz, Integer.MAX_VALUE);  // Llamada recursiva para el siguiente índice
-            combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
+            }
 
-
-
-
+            //if(c< upper) {
+                listas(indice + 1, fin, combs, matriz, upper);               // Llamada recursiva para el siguiente índice
+                combs.remove(combs.size() - 1);                             // borramos el ultimo indice asi podemos probar el siguiente valor
+            //}
         }
     }
 

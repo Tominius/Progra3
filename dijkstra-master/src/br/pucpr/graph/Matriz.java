@@ -20,7 +20,7 @@ public class Matriz {
 
     public void printMatrix() {
         for (int i = 0; i < this.matriz.length; i++) {
-            System.out.println(i);
+            //System.out.println(i);
             for (int j = 0; j < this.matriz[i].length; j++) {
                 System.out.printf("%3d ", this.matriz[i][j]); // Formato con ancho de 3
             }
