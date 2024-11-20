@@ -11,17 +11,17 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void startListas(int indice, int fin, Matriz matriz) {
+    public static void startListas(int indice, int fin, Matriz matriz, int upper) {
         List<Integer> combs = new ArrayList<>();  // Lista vacía
 
-        listas(indice, fin, combs, matriz);
+        listas(indice, fin, combs, matriz, upper);
     }
 
-    private static void  listas(int indice, int fin, List<Integer> combs, Matriz matriz) {
+    private static void  listas(int indice, int fin, List<Integer> combs, Matriz matriz, int upper) {
 
         // Si llegamos al tamaño esperado
 
-        if (indice == fin) {
+        if (combs.size() == fin) {
             return;
         }
 
@@ -35,7 +35,7 @@ public class Main {
 
 
 
-            combs.add(val);
+            combs.add(val); // Añadimos el valor en la posición actual
 
             //Buscamos u
 
@@ -77,13 +77,24 @@ public class Main {
                 }
                 c += findMin(clienteaCC);
             }
+
+            if (c== 0) {
+                c = Integer.MAX_VALUE;
+            }
+
             System.out.println("C: "+c);
 
-            System.out.println(combs);  // Añadimos el valor en la posición actual
+            if (upper>u){
+                upper = u;
+            }
 
-            listas(indice + 1, fin, combs,matriz);  // Llamada recursiva para el siguiente índice
+            System.out.println(combs);
+            if (c<upper){
+                listas(indice + 1, fin, combs,matriz, Integer.MAX_VALUE);  // Llamada recursiva para el siguiente índice
+                combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
+            }
 
-            combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
+
         }
     }
 
@@ -178,7 +189,7 @@ public class Main {
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-       startListas(0, 8,M);
+       startListas(0, 8,M,Integer.MAX_VALUE);
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
