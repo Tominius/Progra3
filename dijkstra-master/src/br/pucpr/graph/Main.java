@@ -3,9 +3,39 @@ package br.pucpr.graph;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+
 public class Main {
+
+
+    public static void startListas(int indice, int fin) {
+        List<Integer> combs = new ArrayList<>();  // Lista vacía
+
+        listas(indice, fin, combs);
+    }
+
+    private static void listas(int indice, int fin, List<Integer> combs) {
+
+        // Si llegamos al tamaño esperado
+
+        if (indice == fin) {
+            return;
+        }
+
+        // Valores posibles (-1 y 1)
+        int[] posibilidades = {1, -1};
+
+        // probamos los 2 valores posibles
+        for (int val : posibilidades) {
+            combs.add(val);
+            System.out.println(combs);  // Añadimos el valor en la posición actual
+            listas(indice + 1, fin, combs);  // Llamada recursiva para el siguiente índice
+            combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
+        }
+    }
 
     private static int readStation(String type, Scanner in) {
         while (true) {
@@ -45,7 +75,7 @@ public class Main {
         }
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+        startListas(0, 3);
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -75,11 +105,15 @@ public class Main {
             e.printStackTrace();
         }
 
-
         M.printMatrix();
+
 
         // La matriz en sus filas tienen los centros del 51 al 58 incluidos (8 centros en total)
         // En sus columnas tiene los productores del 1 al 50 incluidos (50 centros en total)
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
