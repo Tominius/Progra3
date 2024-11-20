@@ -11,13 +11,13 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void startListas(int indice, int fin) {
+    public static void startListas(int indice, int fin, Matriz matriz) {
         List<Integer> combs = new ArrayList<>();  // Lista vacía
 
-        listas(indice, fin, combs);
+        listas(indice, fin, combs, matriz);
     }
 
-    private static void listas(int indice, int fin, List<Integer> combs) {
+    private static void  listas(int indice, int fin, List<Integer> combs, Matriz matriz) {
 
         // Si llegamos al tamaño esperado
 
@@ -25,16 +25,81 @@ public class Main {
             return;
         }
 
+
+
         // Valores posibles (-1 y 1)
         int[] posibilidades = {1, -1};
 
         // probamos los 2 valores posibles
         for (int val : posibilidades) {
+
+
+
             combs.add(val);
+
+            //Buscamos u
+
+            int u = 0; // Mejor valor pesimista
+
+            for (int j = 0; j < 50; j++) {
+
+                List<Integer> clienteaC = new ArrayList<>();
+                for (int i = 0; i < 8; i++) {
+                    if (combs.size() > i) {
+                        if (combs.get(i) == 1) {
+                            clienteaC.add(matriz.matriz[i][j]);
+                        }
+                    }
+                }
+                u += findMin(clienteaC);
+            }
+
+            if (u== 0) {
+                 u = Integer.MAX_VALUE;
+            }
+
+            System.out.println("U: "+u);
+
+            // Buscamos c
+            int c = 0; // Mejor valor posible
+
+            for (int j = 0; j < 50; j++) {
+
+                List<Integer> clienteaCC = new ArrayList<>();
+                for (int i = 0; i < 8; i++) {
+                    if (combs.size() > i) {
+                        if (combs.get(i) == 1) {
+                            clienteaCC.add(matriz.matriz[i][j]);
+                        }
+                    }else{
+                        clienteaCC.add(matriz.matriz[i][j]);
+                    }
+                }
+                c += findMin(clienteaCC);
+            }
+            System.out.println("C: "+c);
+
             System.out.println(combs);  // Añadimos el valor en la posición actual
-            listas(indice + 1, fin, combs);  // Llamada recursiva para el siguiente índice
+
+            listas(indice + 1, fin, combs,matriz);  // Llamada recursiva para el siguiente índice
+
             combs.remove(combs.size() - 1);  // borramos el ultimo indice asi podemos probar el siguiente valor
         }
+    }
+
+    public static int findMin(List<Integer> list) {
+
+        if (list.isEmpty()) {
+            return 0;
+        }
+
+        int min = list.get(0); // Suponemos que el primer elemento es el máximo inicialmente
+        for (int num : list) {
+            if (num < min) {
+                min = num; // Actualizamos el máximo si encontramos un número mayor
+            }
+        }
+        return min;
     }
 
     private static int readStation(String type, Scanner in) {
@@ -75,7 +140,7 @@ public class Main {
         }
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        startListas(0, 3);
+
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -113,7 +178,7 @@ public class Main {
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+       startListas(0, 8,M);
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

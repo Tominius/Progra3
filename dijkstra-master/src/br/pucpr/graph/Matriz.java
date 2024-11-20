@@ -20,29 +20,12 @@ public class Matriz {
 
     public void printMatrix() {
         for (int i = 0; i < this.matriz.length; i++) {
+            System.out.println(i);
             for (int j = 0; j < this.matriz[i].length; j++) {
                 System.out.printf("%3d ", this.matriz[i][j]); // Formato con ancho de 3
             }
             System.out.println(); // Salto de línea después de cada fila
         }
     }
-
-
-
-    public static int findMax(List<Integer> list) {
-
-        if (list.isEmpty()) {
-            return 0;
-        }
-
-        int max = list.get(0); // Suponemos que el primer elemento es el máximo inicialmente
-        for (int num : list) {
-            if (num > max) {
-                max = num; // Actualizamos el máximo si encontramos un número mayor
-            }
-        }
-        return max;
-    }
-
 
 }
