@@ -11,13 +11,17 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void startListas(int indice, int fin, Matriz matriz, int upper) {
+    public static void startListas(int indice, int fin, Matriz matriz) {
+
         List<Integer> combs = new ArrayList<>();  // Lista vacía
 
+        Upper upper = new Upper();
+        upper.ActualizarValor(Integer.MAX_VALUE);
+        int cont = 0;
         listas(indice, fin, combs, matriz, upper);
     }
 
-    private static void  listas(int indice, int fin, List<Integer> combs, Matriz matriz, int upper) {
+    private static void  listas(int indice, int fin, List<Integer> combs, Matriz matriz, Upper upper) {
 
         // Si llegamos al tamaño esperado
 
@@ -25,15 +29,11 @@ public class Main {
             return;
         }
 
-
-
         // Valores posibles (-1 y 1)
         int[] posibilidades = {1, -1};
 
         // probamos los 2 valores posibles
         for (int val : posibilidades) {
-
-
 
             combs.add(val); // Añadimos el valor en la posición actual
 
@@ -56,19 +56,17 @@ public class Main {
 
             for (int q = 0; q < combs.size(); q++) {
                 if (combs.get(q) == 1) {
-                    u+= matriz.matriz[q][51];
+                    u += matriz.matriz[q][51];
                 }
             }
 
-            if (u== 0) {
-                 u = Integer.MAX_VALUE;
+            if (u <= 0) {
+                u = Integer.MAX_VALUE;
             }
 
-            if (u< upper){
-                upper = u;
+            if (u < upper.getValor()) {
+                upper.ActualizarValor(u);
             }
-
-
 
             // Buscamos c
             int c = 0; // Mejor valor posible
@@ -81,7 +79,7 @@ public class Main {
                         if (combs.get(i) == 1) {
                             clienteaCC.add(matriz.matriz[i][j]);
                         }
-                    }else{
+                    } else {
                         clienteaCC.add(matriz.matriz[i][j]);
                     }
                 }
@@ -90,28 +88,31 @@ public class Main {
 
             for (int p = 0; p < combs.size(); p++) {
                 if (combs.get(p) == 1) {
-                    c+= matriz.matriz[p][51];
+                    c += matriz.matriz[p][51];
                 }
             }
 
-            if (c== 0) {
-                c = Integer.MAX_VALUE;
-            }
 
-
-            if (combs.size() == fin) {
-
-            System.out.println("U: "+u);
-            System.out.println("C: "+c);
-            System.out.println(combs);
+            if (combs.size()==fin) {
+                System.out.println("U: " + u);
+                System.out.println("C: " + c);
+                System.out.println(combs);
+                upper.cont ++;
+                System.out.println(upper.cont);
 
             }
 
-            //if(c< upper) {
-                listas(indice + 1, fin, combs, matriz, upper);               // Llamada recursiva para el siguiente índice
-                combs.remove(combs.size() - 1);                             // borramos el ultimo indice asi podemos probar el siguiente valor
-            //}
+
+            listas(indice + 1, fin, combs, matriz, upper); // Llamada recursiva para el siguiente índice
+            combs.remove(combs.size() - 1);// borramos el ultimo indice asi podemos probar el siguiente valor
+            
+            if (c >= upper.getValor()) {
+                System.out.println("Combinación descartada: " + combs + " con C: " + c);
+                return;  // Detén la exploración de esta rama
+            }
+
         }
+
     }
 
     public static int findMin(List<Integer> list) {
@@ -206,7 +207,8 @@ public class Main {
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-       startListas(0, 8,M,Integer.MAX_VALUE);
+
+        startListas(0, 8,M);
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
