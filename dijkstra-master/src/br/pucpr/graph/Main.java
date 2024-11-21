@@ -3,6 +3,7 @@ package br.pucpr.graph;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -57,6 +58,8 @@ public class Main {
                 upper.ActualizarValor(u);
                 mejorCombinacion.clear();
                 mejorCombinacion.addAll(combs);
+                System.out.println(mejorCombinacion);
+                System.out.println(upper.getValor());
             }
 
             return; // No se sigue explorando después de completar una combinación
@@ -88,16 +91,17 @@ public class Main {
                 }
             }
 
-            // Poda: detener si el valor optimista ya no mejora
             if (c >= upper.getValor()) {
-                combs.remove(combs.size() - 1); // Backtracking
+                System.out.println(upper.getValor());
+                System.out.println("Combinacion descartada: "+ combs+ " C: "+ c);
+                combs.remove(combs.size() - 1);
                 return;
             }
 
+            System.out.println(combs + " C: " + c);
+
             // Llamada recursiva
             listas(indice + 1, fin, combs, matriz, upper, mejorCombinacion);
-
-            // Backtracking
             combs.remove(combs.size() - 1);
         }
     }
