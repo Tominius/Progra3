@@ -14,41 +14,29 @@ public class Main {
     public static void startListas(int indice, int fin, Matriz matriz) {
 
         List<Integer> combs = new ArrayList<>();  // Lista vacía
+        List<Integer> mejorCombinacion = new ArrayList<>(); // Para almacenar la mejor combinación
 
         Upper upper = new Upper();
         upper.ActualizarValor(Integer.MAX_VALUE);
-        int cont = 0;
-        listas(indice, fin, combs, matriz, upper);
+
+        listas(indice, fin, combs, matriz, upper, mejorCombinacion);
+
+        // Imprimir la mejor combinación al final
+        System.out.println("Mejor combinación: " + mejorCombinacion);
+        System.out.println("Valor óptimo: " + upper.getValor());
     }
 
-    private static void  listas(int indice, int fin, List<Integer> combs, Matriz matriz, Upper upper) {
+    private static void listas(int indice, int fin, List<Integer> combs, Matriz matriz, Upper upper, List<Integer> mejorCombinacion) {
 
-        // Si llegamos al tamaño esperado
-
+        // Si llegamos al tamaño esperado (combinación completa)
         if (combs.size() == fin) {
-            return;
-        }
-
-        // Valores posibles (-1 y 1)
-        int[] posibilidades = {1, -1};
-
-        // probamos los 2 valores posibles
-        for (int val : posibilidades) {
-
-            combs.add(val); // Añadimos el valor en la posición actual
-
-            //Buscamos u
-
-            int u = 0; // Mejor valor pesimista
-
+            // Calcular u (pesimista) para la combinación completa
+            int u = 0;
             for (int j = 0; j < 50; j++) {
-
                 List<Integer> clienteaC = new ArrayList<>();
                 for (int i = 0; i < 8; i++) {
-                    if (combs.size() > i) {
-                        if (combs.get(i) == 1) {
-                            clienteaC.add(matriz.matriz[i][j]);
-                        }
+                    if (combs.get(i) == 1) {
+                        clienteaC.add(matriz.matriz[i][j]);
                     }
                 }
                 u += findMin(clienteaC);
@@ -64,22 +52,30 @@ public class Main {
                 u = Integer.MAX_VALUE;
             }
 
+            // Si encontramos un mejor valor, actualizamos
             if (u < upper.getValor()) {
                 upper.ActualizarValor(u);
+                mejorCombinacion.clear();
+                mejorCombinacion.addAll(combs);
             }
 
-            // Buscamos c
-            int c = 0; // Mejor valor posible
+            return; // No se sigue explorando después de completar una combinación
+        }
 
+        // Valores posibles (-1 y 1)
+        int[] posibilidades = {1, -1};
+
+        for (int val : posibilidades) {
+            combs.add(val); // Añadimos el valor en la posición actual
+
+            // Calcular c (optimista) para combinaciones parciales
+            int c = 0;
             for (int j = 0; j < 50; j++) {
-
                 List<Integer> clienteaCC = new ArrayList<>();
                 for (int i = 0; i < 8; i++) {
-                    if (combs.size() > i) {
-                        if (combs.get(i) == 1) {
-                            clienteaCC.add(matriz.matriz[i][j]);
-                        }
-                    } else {
+                    if (combs.size() > i && combs.get(i) == 1) {
+                        clienteaCC.add(matriz.matriz[i][j]);
+                    } else if (combs.size() <= i) {
                         clienteaCC.add(matriz.matriz[i][j]);
                     }
                 }
@@ -92,28 +88,21 @@ public class Main {
                 }
             }
 
-
-            if (combs.size()==fin) {
-                System.out.println("U: " + u);
-                System.out.println("C: " + c);
-                System.out.println(combs);
-                upper.cont ++;
-                System.out.println(upper.cont);
-
-            }
-
-
-            listas(indice + 1, fin, combs, matriz, upper); // Llamada recursiva para el siguiente índice
-            combs.remove(combs.size() - 1);// borramos el ultimo indice asi podemos probar el siguiente valor
-            
+            // Poda: detener si el valor optimista ya no mejora
             if (c >= upper.getValor()) {
-                System.out.println("Combinación descartada: " + combs + " con C: " + c);
-                return;  // Detén la exploración de esta rama
+                combs.remove(combs.size() - 1); // Backtracking
+                return;
             }
 
-        }
+            // Llamada recursiva
+            listas(indice + 1, fin, combs, matriz, upper, mejorCombinacion);
 
+            // Backtracking
+            combs.remove(combs.size() - 1);
+        }
     }
+
+
 
     public static int findMin(List<Integer> list) {
 
