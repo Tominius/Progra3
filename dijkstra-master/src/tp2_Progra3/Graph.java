@@ -15,19 +15,12 @@ public class Graph {
         vertices[vertex2][vertex1] = time;
     }
 
-    public void removeEdge(int vertex1, int vertex2) {
-        vertices[vertex1][vertex2] = 0;
-        vertices[vertex2][vertex1] = 0;
-    }
+
 
     public int getCost(int vertex1, int vertex2) {
         return vertices[vertex1][vertex2];
     }
 
-    /**
-     * @param vertex Origin vertex
-     * @return a list with the index of all vertexes connected to the given vertex.
-     */
     public List<Integer> getNeighbors(int vertex) {
         List<Integer> neighbors = new ArrayList<>();
         for (int i = 0; i < vertices[vertex].length; i++)
@@ -38,13 +31,8 @@ public class Graph {
         return neighbors;
     }
 
-    /**
-     * Implementation of the Dijkstra's algorithm.
-     * @param from Source node
-     * @param to Destionation node
-     * @return The path.
-     */
     public int path(int from, int to) {
+        
         // Inicialización
         int cost[] = new int[vertices.length];
         Set<Integer> unvisited = new HashSet<>();
